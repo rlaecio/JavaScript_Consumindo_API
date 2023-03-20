@@ -6,15 +6,21 @@ async function buscaEndereco(cep) {
         if (consultaCEPConvertida.erro){
             throw Error('Cep não existente!');
         }
-        console.log(consultaCEPConvertida);
-        //return consultaCEPConvertida; 
+
+        var cidade = document.getElementById('cidade');
+        var logradouro = document.getElementById('endereco');
+        var estado = document.getElementById('estado');
+
+        cidade.value = consultaCEPConvertida.localidade;
+        logradouro.value = consultaCEPConvertida.logradouro;
+        estado.value = consultaCEPConvertida.uf;
+        
+        return consultaCEPConvertida; 
         
     } catch (error) {
         console.log(error)    
     }
 }
 
-
-let ceps = ['01001001', '01001000'];
-let conjuntoCeps = ceps.map(valores => buscaEndereco(valores));
-Promise.all(conjuntoCeps).then(resposta => console.log(resposta));
+var cep = document.getElementById('cep');
+cep.addEventListener("focusout", () => buscaEndereco(cep.value))
