@@ -1,12 +1,20 @@
-var consultaCep = fetch('https://viacep.com.br/ws/01001010/json/')
-    .then(resposta => resposta.json())
-    .then(r => {
-        if(r.erro) {
-            throw Error('Este cep não existe!')
-        } else { 
-            console.log(r)
-        }})
-    .catch(erro => console.log(erro))
-    .finally(mensagem => console.log('Processamento Concluido!'));
+async function buscaEndereco(cep) {
+    try {
+        var consultaCEP = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        var consultaCEPConvertida = await consultaCEP.json();
     
-console.log(consultaCep.r)
+        if (consultaCEPConvertida.erro){
+            throw Error('Cep não existente!');
+        }
+        console.log(consultaCEPConvertida);
+        //return consultaCEPConvertida; 
+        
+    } catch (error) {
+        console.log(error)    
+    }
+}
+
+
+let ceps = ['01001001', '01001000'];
+let conjuntoCeps = ceps.map(valores => buscaEndereco(valores));
+Promise.all(conjuntoCeps).then(resposta => console.log(resposta));
