@@ -1,4 +1,7 @@
 async function buscaEndereco(cep) {
+    var mensagemErro = document.getElementById('erro');
+    mensagemErro.innerHTML = "";
+
     try {
         var consultaCEP = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         var consultaCEPConvertida = await consultaCEP.json();
@@ -13,12 +16,15 @@ async function buscaEndereco(cep) {
 
         cidade.value = consultaCEPConvertida.localidade;
         logradouro.value = consultaCEPConvertida.logradouro;
+        bairro.value = consultaCEPConvertida.bairro
         estado.value = consultaCEPConvertida.uf;
-        
+
+        //console.log(consultaCEPConvertida)
         return consultaCEPConvertida; 
         
     } catch (error) {
-        console.log(error)    
+        mensagemErro.innerHTML = `<p>CEP invalido Teste Novamente</p>`;
+        //console.log(error)    
     }
 }
 
